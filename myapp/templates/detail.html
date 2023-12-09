@@ -1,18 +1,71 @@
 {% extends 'base.html' %}
+
 {% block content %}
+<div class="container mt-5">
 <div class="row">
 <div class="col-md-6">
     <br>{{d.title}}
     {{d.description}}<br>
-    {{d.price}}<br>
+    Price:  ₹{{d.price}}<br>
     </div>
     <div class="col-md-6">
-        <img src="{{d.img.url}}" width="400", height="400">
+        <img src="{{d.img.url}}" width="400", height="400" alt="{{d.title}}">
     </div>
 </div>
-<form action="{% url 'myapp:detail' d.id d.slug %}" method="post">
-    {% csrf_token %}
-    {{ f }}
-    <input type="submit" value="Add to Cart">
-</form>
+
+<div class="mt-4">
+    <div class="row">
+        <div class="col-md-6">
+            {% if d.product_avaliable and user.is_authenticated %}
+            <form action="{% url 'myapp:detail' d.id d.slug %}" method="post">
+                {% csrf_token %}
+                {{ f }}
+                <input type="submit" value="Add to Cart" class="btn btn-primary">
+            </form>
+            {% else %}
+                <p class="card-text text-danger">Out of Stock</p>
+              {% endif %}
+        </div>
+        
+    </div>
+</div>
+
+
+{% if user.is_authenticated %}
+<div class="mt-4">
+    <form method="post" action="{% url 'myapp:add_review' d.id %}">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="review_content">Add a Review</label>
+            <textarea class="form-control" id="review_content" name="review_content" rows="4" placeholder="Write your review here"></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">Submit Review</button>
+    </form>
+</div>
+{% else %}
+<div class="mt-4">
+    <p>Please <a href="{% url 'auth_login' %}">login</a> to add a review or rating.</p>
+</div>
+{% endif %}
+
+<hr>
+
+{% if reviews %}
+<div class="mt-4">
+    <h2>Reviews</h2>
+    <ul class="list-group">
+        {% for review in reviews %}
+        <li class="list-group-item">
+            <p>{{ review.content }}</p>
+            <small class="text-muted">Date: {{ review.timestamp|date:"F d, Y" }}</small>
+        </li>
+        {% endfor %}
+    </ul>
+</div>
+{% else %}
+<div class="mt-4">
+    <p>No reviews yet.</p>
+</div>
+{% endif %}
+</div>
 {% endblock %}

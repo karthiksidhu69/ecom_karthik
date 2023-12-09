@@ -1,13 +1,65 @@
 {% extends 'base.html' %}
+
 {% block content %}
-<div class="row">
-    {% for i in p %}
-    <div class="col-md-6">
-      <a href="{% url 'myapp:detail' i.id i.slug %}"><b>{{i.title}}</b><br></a>
-      <img src="{{i.img.url}}" width=300 height=300 alt=""><br>
-      ₹{{i.price}}
-      <br><br>
+  <style>
+    .card-hover:hover {
+      transform: scale(1.05);
+      transition: transform 0.3s ease-in-out;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      border: 5px solid #343a40; /* Add your desired dark border color */
+    }
+
+    /* Additional style for the circular images */
+    .circle-img {
+      border-radius: 50%;
+      width: 50px; /* Adjust as needed */
+      height: 50px; /* Adjust as needed */
+      margin-right: 10px; /* Adjust spacing */
+    }
+
+    /* Adjust card and grid sizes */
+    .card-deck {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      grid-gap: 20px;
+      justify-content: space-around;
+    }
+
+    .card {
+      width: 100%;
+      margin: 0;
+    }
+
+    .card-img-top {
+      object-fit: cover;
+      height: 150px;
+    }
+  </style>
+
+  <body>
+    <div class="container">
+  
+      <!-- Card Deck -->
+      <div class="card-deck mt-4">
+        {% for i in p %}
+          <div class="card mb-4 card-hover">
+            <a href="{% url 'myapp:detail' i.id i.slug %}">
+              <img src="{{i.img.url}}" class="card-img-top" alt="{{i.title}}">
+            </a>
+            
+            <div class="card-body">
+              <h5 class="card-title">
+                <a href="{% url 'myapp:detail' i.id i.slug %}">{{i.title}}</a>
+              </h5>
+              {% if i.product_avaliable %}
+                <p class="card-text text-success">₹{{i.price}}</p>
+              {% else %}
+                <p class="card-text text-danger">Out of Stock</p>
+              {% endif %}
+            </div>
+          </div>
+        {% endfor %}
+      </div>
     </div>
-    {% endfor %}
-</div>
+  </body>
 {% endblock %}

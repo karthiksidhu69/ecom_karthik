@@ -1,0 +1,29 @@
+<!-- myapp/templates/wishlist.html -->
+
+{% extends 'base.html' %}
+
+{% block content %}
+  <div class="container mt-4">
+    <h2>My Wishlist</h2>
+    {% if wishlist.products.all %}
+      <div class="row">
+        {% for product in wishlist.products.all %}
+          <div class="col-md-4 mb-4">
+            <div class="card">
+              <img src="{{ product.img.url }}" class="card-img-top" alt="{{ product.title }}">
+              <div class="card-body">
+                <h5 class="card-title">{{ product.title }}</h5>
+                <p class="card-text">{{ product.description }}</p>
+                <p class="card-text">Price: ${{ product.price }}</p>
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    {% else %}
+      <p>Your wishlist is empty.</p>
+    {% endif %}
+  </div>
+{% endblock %}
+
+

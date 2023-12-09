@@ -30,5 +30,6 @@ def total_(request):
     items=get_cart(request)
     t=0
     for i in items:
-        t+=i.total()
+        #t+=i.total()
+        t += i.price * i.quantity
     return t

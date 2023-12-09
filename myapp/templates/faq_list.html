@@ -1,0 +1,18 @@
+<!-- myapp/templates/myapp/faq_list.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>FAQ List</title>
+</head>
+<body>
+    <h1>Frequently Asked Questions</h1>
+    <ul>
+        {% for faq in faqs %}
+            <li>
+                <strong>{{ faq.question }}</strong><br>
+                {{ faq.answer }}
+            </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

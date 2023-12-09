@@ -7,4 +7,9 @@ class CartForm(forms.Form):
     def __init__(self,request,*args,**kwargs):
         self.request=request
         super(CartForm,self).__init__(*args,**kwargs)
+from .models import ContactMessage
 
+class ContactForm(forms.ModelForm):
+    class Meta:
+        model = ContactMessage
+        fields = ['name', 'email', 'subject', 'message']
